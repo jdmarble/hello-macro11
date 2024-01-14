@@ -1,0 +1,26 @@
+.title Hello world program
+
+; This program prints "Hello, world!" on the serial console at 177560.
+; Then it HALTs.
+; On CONT, it repeats.
+
+.asect
+serial = 177560 ; base addr of DL11
+
+.=2000
+
+start:
+mov #serial+4,R2 ; R0 points to DL11 transmitter section
+mov #string,R1 ; R1 points to the current character
+nxtchr:
+movb (R1)+,R0 ; load xmt char
+beq done ; string is terminated with 0
+movb R0,2(R2) ; write char to transmit buffer
+wait: tstb (R2) ; character transmitted?
+bpl wait ; no, loop
+br nxtchr ; transmit nxt char of string
+done: halt
+br start
+string:
+.ascii /Hello, world/ ; arbitrary text
+.byte 12,0 ; LF char, end marker
