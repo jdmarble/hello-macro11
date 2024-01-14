@@ -1,0 +1,34 @@
+name: compile
+"on":
+  push:
+    branches: [ 'main' ]
+jobs:
+  assemble-and-link:
+    runs-on: ubuntu-latest
+    container: ghcr.io/jdmarble/macro11-container:main
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Assemble
+        run: macro11 -o hello.obj hello.mac
+      - name: Link
+        run: obj2bin.pl --binary --out hello.bin hello.obj
+      - name: Upload binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: hello.bin
+          path: hello.bin
+          if-no-files-found: error
+  test:
+    needs: assemble-and-link
+    runs-on: ubuntu-latest
+    container: ghcr.io/jdmarble/pdp11-container:slim
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Download binary
+        uses: actions/download-artifact@v4
+        with:
+          name: hello.bin
+      - name: Run
+        run: pdp11 hello.ini
