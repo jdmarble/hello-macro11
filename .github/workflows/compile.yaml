@@ -31,4 +31,4 @@ jobs:
         with:
           name: hello.bin
       - name: Run
-        run: pdp11 hello.ini
+        run: pdp11 test.ini

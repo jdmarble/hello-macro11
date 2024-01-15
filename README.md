@@ -12,7 +12,7 @@ and [`simh`](https://opensimh.org) on your path.
 ```sh
 macro11 -o hello.obj hello.mac
 obj2bin.pl --binary --out hello.bin hello.obj
-pdp11 hello.ini
+pdp11 test.ini
 ```
 
 ## Docker Build
@@ -23,11 +23,8 @@ pdp11 hello.ini
 > docker run --rm --volume `pwd`:`pwd` --workdir `pwd` \
   ghcr.io/jdmarble/macro11-container:main obj2bin.pl --binary --out hello.bin hello.obj
 > docker run --rm --volume `pwd`:`pwd` --workdir `pwd` \
-  ghcr.io/jdmarble/pdp11-container:main hello.ini
+  ghcr.io/jdmarble/pdp11-container:main test.ini
 
 PDP-11 simulator Open SIMH V4.1-0 Current        git commit id: c077c22d
 Hello, world
-
-HALT instruction, PC: 002030 (BR 2000)
-Goodbye
 ```
